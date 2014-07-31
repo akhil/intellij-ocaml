@@ -1,0 +1,167 @@
+<!--
+  ~ OCaml Support For IntelliJ Platform.
+  ~ Copyright (C) 2010 Maxim Manuylov
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 2 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program. If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+  -->
+
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin url="http://code.google.com/p/intellij-ocaml/">
+    <name>OCaml Support</name>
+    <id>OCamlSupport</id>
+    <description>OCaml language support</description>
+    <change-notes><![CDATA[
+        <h3>&nbsp;OCaml Support v0.9.8</h3>
+        <ul>
+            <li>Showing conflicts for renaming</li>
+            <li>Bug fixing</li>
+        </ul>
+        <h3>&nbsp;OCaml Support v0.9.7</h3>
+        <ul>
+            <li>Correct processing of compiler output</li>
+            <li>Fixed one more NPE on project creating</li>
+        </ul>
+        <h3>&nbsp;OCaml Support v0.9.6</h3>
+        <ul>
+            <li>Fixed NPE on project creating</li>
+        </ul>
+        <h3>&nbsp;OCaml Support v0.9.5</h3>
+        <ul>
+            <li>Context-dependent code completion for keywords</li>
+            <li>Choosing sources directory step in module creating wizard</li>
+            <li>Bug fixing</li>
+        </ul>
+        <h3>&nbsp;OCaml Support v0.9</h3>
+        <ul>
+            <li>Syntax and errors highlighting</li>
+            <li>References resolving</li>
+            <li>Compilation and executing</li>
+            <li>Automatic dependencies detection</li>
+            <li>Run configurations producer</li>
+            <li>Top level console (including support for several consoles running simultaneously)</li>
+            <li>Quick switching between ".ml" and ".mli" files (Shift + Alt + M)</li>
+            <li>Code completion for identifiers</li>
+            <li>Rename refactoring</li>
+            <li>Find usages</li>
+            <li>Surround with</li>
+            <li>Code commenting/uncommenting</li>
+            <li>Code folding</li>
+            <li>Brace matching</li>
+            <li>Quotes and backspace handlers</li>
+        </ul>
+    ]]></change-notes>
+    <version>0.9.8</version>
+    <vendor email="maxim.manuylov@gmail.com" logo="/img/ocaml-small.png">Maxim Manuylov</vendor>
+    <category>Custom Languages</category>
+    <idea-version since-build="10000"/>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <project-components>
+        <component>
+            <implementation-class>manuylov.maxim.ocaml.settings.OCamlSettings</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>manuylov.maxim.ocaml.toolWindow.OCamlToolWindowComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <extensions xmlns="com.intellij">
+        <fileTypeFactory implementation="manuylov.maxim.ocaml.fileType.OCamlFileTypeFactory"/>
+
+        <lang.syntaxHighlighterFactory key="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.highlighting.OCamlSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory key="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.highlighting.OCamlSyntaxHighlighterFactory"/>
+        <lang.parserDefinition language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.fileType.ml.parser.MLParserDefinition"/>
+        <lang.parserDefinition language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.fileType.mli.parser.MLIParserDefinition"/>
+        <annotator language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.highlighting.OCamlAnnotatingVisitor"/>
+        <annotator language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.highlighting.OCamlAnnotatingVisitor"/>
+        <lang.braceMatcher language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.braceMatching.OCamlBraceMatcher"/>
+        <lang.braceMatcher language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.braceMatching.OCamlBraceMatcher"/>
+        <lang.foldingBuilder language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.folding.OCamlFoldingBuilder"/>
+        <lang.foldingBuilder language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.folding.OCamlFoldingBuilder"/>
+        <lang.commenter language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.commenting.OCamlCommenter"/>
+        <lang.commenter language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.commenting.OCamlCommenter"/>
+        <lang.findUsagesProvider language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.findUsages.OCamlFindUsagesProvider"/>
+        <lang.findUsagesProvider language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.findUsages.OCamlFindUsagesProvider"/>
+        <lang.namesValidator language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.rename.OCamlNamesValidator"/>
+        <lang.namesValidator language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.rename.OCamlNamesValidator"/>
+        <lang.refactoringSupport language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.OCamlRefactoringSupportProvider"/>
+        <lang.refactoringSupport language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.OCamlRefactoringSupportProvider"/>
+        <completion.contributor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.completion.OCamlCompletionContributor"/>
+        <completion.contributor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.completion.OCamlCompletionContributor"/>
+
+        <!-- Surrounders { -->
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlClassExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlClassExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlModuleExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlModuleExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlModuleTypeSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlModuleTypeSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlPatternSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlPatternSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_ML" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlTypeExpressionSurroundDescriptor"/>
+        <lang.surroundDescriptor language="OCAML_MLI" implementationClass="manuylov.maxim.ocaml.lang.feature.refactoring.surround.OCamlTypeExpressionSurroundDescriptor"/>
+        <!-- } -->
+
+        <renamePsiElementProcessor implementation="manuylov.maxim.ocaml.lang.feature.refactoring.rename.OCamlRenameRecordFieldOrConstructorProcessor"/>
+        <renamePsiElementProcessor implementation="manuylov.maxim.ocaml.lang.feature.refactoring.rename.OCamlRenamePsiElementProcessor"/>
+
+        <quoteHandler fileType="OCAML_ML_FILE" className="manuylov.maxim.ocaml.editor.OCamlQuoteHandler"/>
+        <quoteHandler fileType="OCAML_MLI_FILE" className="manuylov.maxim.ocaml.editor.OCamlQuoteHandler"/>
+        <backspaceHandlerDelegate implementation="manuylov.maxim.ocaml.editor.OCamlBackspaceHandler"/>
+
+        <sdkType implementation="manuylov.maxim.ocaml.sdk.OCamlSdkType"/>
+
+        <moduleType id="OCAML_MODULE" implementationClass="manuylov.maxim.ocaml.module.OCamlModuleType"/>
+        <moduleConfigurationEditorProvider implementation="manuylov.maxim.ocaml.module.OCamlModuleConfigurationEditorProvider"/>
+
+        <compiler implementation="manuylov.maxim.ocaml.compile.OCamlCompiler"/>
+        <compiler implementation="manuylov.maxim.ocaml.compile.OCamlLinker"/>
+
+        <configurationType implementation="manuylov.maxim.ocaml.run.OCamlConfigurationType"/>
+        <configurationProducer implementation="manuylov.maxim.ocaml.run.OCamlRunConfigurationProducer"/>
+        <programRunner implementation="manuylov.maxim.ocaml.run.OCamlRunner"/>
+
+        <stubIndex implementation="manuylov.maxim.ocaml.lang.parser.stub.index.OCamlClassIndex"/>
+        <stubIndex implementation="manuylov.maxim.ocaml.lang.parser.stub.index.OCamlModuleIndex"/>
+        <stubIndex implementation="manuylov.maxim.ocaml.lang.parser.stub.index.OCamlSymbolIndex"/>
+        <gotoClassContributor implementation="manuylov.maxim.ocaml.lang.feature.navigation.OCamlGoToClassContributor"/>
+        <gotoSymbolContributor implementation="manuylov.maxim.ocaml.lang.feature.navigation.OCamlGoToSymbolContributor"/>
+    </extensions>
+
+    <actions>
+        <action id="manuylov.maxim.ocaml.actions.CreateMLFileAction" class="manuylov.maxim.ocaml.actions.CreateMLFileAction"
+                text="OCaml Module Implementation" description="Create New OCaml Module Implementation File">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+
+        <action id="manuylov.maxim.ocaml.actions.CreateMLIFileAction" class="manuylov.maxim.ocaml.actions.CreateMLIFileAction"
+                text="OCaml Module Interface" description="Create New OCaml Module Interface File">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="manuylov.maxim.ocaml.actions.CreateMLFileAction"/>
+        </action>
+
+        <separator>
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="manuylov.maxim.ocaml.actions.CreateMLIFileAction"/>
+        </separator>
+
+        <action id="manuylov.maxim.ocaml.actions.SwitchModuleFileAction" class="manuylov.maxim.ocaml.actions.SwitchModuleFileAction"
+                text="Switch Module File" description="Switch between module implementation and interface files">
+            <keyboard-shortcut keymap="$default" first-keystroke="shift alt M"/>
+        </action>
+    </actions>
+</idea-plugin>
